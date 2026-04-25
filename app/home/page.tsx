@@ -3,7 +3,7 @@ import NavBar from "./lib/nav-bar";
 import TrustBar from "./lib/trust-bar";
 import EngineeringDifference from "./about/about-section";
 import ContactSection from "./contact/form";
-import StarsCanvas from "./canvas/Stars";
+import StarsWrapper from "./canvas/StarsWrapper";
 import ServiceSection from "./services/service-section";
 import ProjectSection from "./projexts/project-section";
 
@@ -18,7 +18,7 @@ export default function HomePageSection() {
       <ProjectSection />
 
       <div className="relative z-0">
-        <StarsCanvas />
+        <StarsWrapper />
         <ContactSection />
       </div>
     </main>

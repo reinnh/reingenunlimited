@@ -335,25 +335,21 @@ export default function TechStackSection() {
           {" — "}strategy, design, development, deployment & support.
         </div>
 
-        {/* video */}
+        {/* Optimized Static Tech Visual */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-5 overflow-hidden rounded-lg border border-white/8"
+          className="mt-6 flex items-center justify-center h-24 overflow-hidden rounded-lg border border-white/8 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-sky-900/20 via-[#0b0b18] to-[#050816] relative"
         >
-          <video
-            className="w-full h-auto object-cover"
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="metadata"
-            aria-label="Technology showcase"
-          >
-            <source src="/media/tech1.mp4" type="video/mp4" />
-          </video>
+          <div className="absolute inset-0 opacity-[0.05] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:12px_12px]" />
+          <div className="flex gap-4 opacity-50 filter grayscale">
+            {/* simple static dots representing nodes */}
+            <div className="w-2 h-2 rounded-full bg-sky-400 animate-pulse" />
+            <div className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse delay-75" />
+            <div className="w-2 h-2 rounded-full bg-purple-400 animate-pulse delay-150" />
+          </div>
         </motion.div>
       </div>
 

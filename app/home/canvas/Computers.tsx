@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState, memo, useRef } from "react";
+import { Suspense, memo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { OrbitControls, Preload, useGLTF } from "@react-three/drei";
@@ -47,26 +47,6 @@ const ComputerModel = ({ isMobile }: { isMobile: boolean }) => {
 const MemoizedComputerModel = memo(ComputerModel);
 
 const ComputersCanvas = () => {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 500px)");
-
-    interface MediaQueryChangeEvent {
-      matches: boolean;
-    }
-
-    const handleMediaQueryChange = (event: MediaQueryChangeEvent) => {
-      setIsMobile(event.matches);
-    };
-
-    mediaQuery.addEventListener("change", handleMediaQueryChange);
-
-    return () => {
-      mediaQuery.removeEventListener("change", handleMediaQueryChange);
-    };
-  }, []);
-
   return (
     <Canvas
       frameloop="always"
@@ -82,7 +62,7 @@ const ComputersCanvas = () => {
           maxPolarAngle={1.57}
           minPolarAngle={1.57}
         />
-        <MemoizedComputerModel isMobile={isMobile} />
+        <MemoizedComputerModel isMobile={false} />
       </Suspense>
       <Preload all />
     </Canvas>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useRef, useMemo } from "react";
+import { Suspense, useRef, useMemo, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Points, PointMaterial, Preload } from "@react-three/drei";
 import * as THREE from "three";
@@ -48,15 +48,17 @@ const Stars = () => {
   );
 };
 
-const StarsCanvas = () => (
-  <div className="w-full h-auto absolute inset-0 z-[-1]">
-    <Canvas camera={{ position: [0, 0, 1] }}>
-      <Suspense fallback={null}>
-        <Stars />
-      </Suspense>
-      <Preload all />
-    </Canvas>
-  </div>
-);
+const StarsCanvas = () => {
+  return (
+    <div className="w-full h-auto absolute inset-0 z-[-1]">
+      <Canvas camera={{ position: [0, 0, 1] }}>
+        <Suspense fallback={null}>
+          <Stars />
+        </Suspense>
+        <Preload all />
+      </Canvas>
+    </div>
+  );
+};
 
 export default StarsCanvas;

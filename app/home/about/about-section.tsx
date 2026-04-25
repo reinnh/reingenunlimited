@@ -12,7 +12,7 @@ const features = [
       "We take ownership from planning through launch. You get clear requirements, solid architecture, and clean implementation—built to ship quickly today and scale confidently tomorrow. We align scope, timelines, and technical decisions so delivery stays predictable and maintainable.",
     highlight: "Delivery",
     sub: "Discovery → Build → Launch",
-    image: "/images/dev1.jpg",
+    image: "/images/dev1.png",
   },
   {
     title: "Clear Process, Visible Progress",
@@ -111,6 +111,7 @@ export default function EngineeringDifference() {
                     src={feature.image}
                     alt={feature.title}
                     fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
                     className="object-cover rounded-xl hover:scale-105 transition duration-700"
                   />
                 )}

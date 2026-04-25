@@ -168,6 +168,7 @@ function ProjectCard({
           src={project.image}
           alt={project.title}
           fill
+          priority={index < 2}
           className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
@@ -363,21 +364,10 @@ function ProjectGallery() {
   return (
     <section id="projects" className="relative w-full py-16 overflow-hidden">
       {/* background video — breaks out of max-w container to full viewport */}
-      <div className="absolute inset-y-0 left-1/2 z-0 w-screen -translate-x-1/2">
-        <video
-          className="h-full w-full object-cover"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="metadata"
-          aria-hidden="true"
-        >
-          <source src="/media/bg.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-[#050816]/85" />
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#050816] to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#050816] to-transparent" />
+      {/* Optimized deep dark gradient background — breaks out of max-w container to full viewport */}
+      <div className="absolute inset-y-0 left-1/2 z-0 w-screen -translate-x-1/2 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#0a0a1a] via-[#050816] to-[#050816]">
+        {/* Subtle grid overlay to keep it premium */}
+        <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
       </div>
 
       <div className="relative z-10 mx-auto px-4 md:px-8">

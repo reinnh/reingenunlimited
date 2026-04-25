@@ -2,12 +2,23 @@
 
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import ComputersCanvas from "../canvas/Computers";
-import { useState } from "react";
+import dynamic from "next/dynamic";
+const ComputersCanvas = dynamic(() => import("../canvas/Computers"), { ssr: false });
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
 export default function HeroSection() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" ? window.matchMedia("(max-width: 768px)").matches : false
+  );
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    const handleMediaQueryChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mediaQuery.addEventListener("change", handleMediaQueryChange);
+    return () => mediaQuery.removeEventListener("change", handleMediaQueryChange);
+  }, []);
   return (
     <section
       id="hero"
@@ -18,6 +29,8 @@ export default function HeroSection() {
           src="/herobg.png"
           alt="engineering systems"
           fill
+          priority
+          sizes="100vw"
           className="w-full h-full object-cover"
         />
       </div>
@@ -54,8 +67,17 @@ export default function HeroSection() {
           </div>
         </motion.div>
 
-        {/* Right - Canvas */}
+        {/* Right - Canvas or Fallback */}
+        {isMobile ? (
+          <div className="w-full h-full flex items-center justify-center pointer-events-none xl:flex-1 max-w-xl h-[350px] md:h-[500px]">
+            <div className="relative w-[280px] h-[280px] rounded-full border border-sky-500/10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-sky-900/20 via-transparent to-transparent flex items-center justify-center">
+              <div className="w-[180px] h-[180px] rounded-full border border-sky-400/20 bg-sky-800/10" />
+              <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:14px_14px] rounded-full opacity-30" />
+            </div>
+          </div>
+        ) : (
           <ComputersCanvas />
+        )}
         
       </div>
       </AnimatePresence>

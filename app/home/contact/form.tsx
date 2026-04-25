@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
-import EarthCanvas from "@/app/home/canvas/Earth";
+import dynamic from "next/dynamic";
+const EarthCanvas = dynamic(() => import("@/app/home/canvas/Earth"), { ssr: false });
 import SectionWrapper from "@/app/hoc/section-wrapper";
 import { slideIn } from "@/app/lib/motion";
 import { toast } from "sonner";
@@ -24,6 +25,17 @@ const Contact = () => {
     phone: "",
     message: "",
   });
+
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" ? window.matchMedia("(max-width: 768px)").matches : false
+  );
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    const handleMediaQueryChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mediaQuery.addEventListener("change", handleMediaQueryChange);
+    return () => mediaQuery.removeEventListener("change", handleMediaQueryChange);
+  }, []);
 
   const [loading, setLoading] = useState(false);
 
@@ -168,14 +180,16 @@ const Contact = () => {
         </form>
       </motion.div>
 
-      {/* CANVAS (UNCHANGED) */}
-      <motion.div
-        variants={slideIn({ direction: "right", delay: 0.2 })}
-        viewport={{ once: true, amount: 0.25 }}
-        className="xl:flex-1  max-w-xl  w-full h-[350px] md:h-[500px] lg:h-[600px] xl:h-[700px] mb-10 md:mb-0"
-      >
-        <EarthCanvas />
-      </motion.div>
+      {/* CANVAS (HIDDEN ON MOBILE AND NOT FETCHED TO PREVENT TBT) */}
+      {!isMobile && (
+        <motion.div
+          variants={slideIn({ direction: "right", delay: 0.2 })}
+          viewport={{ once: true, amount: 0.25 }}
+          className="hidden md:block xl:flex-1 max-w-xl w-full h-[350px] md:h-[500px] lg:h-[600px] xl:h-[700px]"
+        >
+          <EarthCanvas />
+        </motion.div>
+      )}
     </section>
   );
 };
