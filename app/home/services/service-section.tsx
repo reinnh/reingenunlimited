@@ -108,20 +108,32 @@ const services: Service[] = [
   },
 ];
 
-const cardVariants:Variants = {
+const cardVariants: Variants = {
   hidden: (dir: "left" | "right") => ({
     opacity: 0,
-    y: 14,
-    x: dir === "left" ? -28 : 28,
+    y: 60,
+    x: dir === "left" ? -40 : 40,
+    scaleX: 0.8,
+    scaleY: 1.2,
+    skewX: dir === "left" ? 20 : -20,
+    skewY: dir === "left" ? 10 : -10,
     filter: "blur(6px)",
   }),
-  show: {
+  show: (dir: "left" | "right") => ({
     opacity: 1,
     y: 0,
     x: 0,
+    scaleX: [0.8, 1.1, 0.95, 1.02, 1],
+    scaleY: [1.2, 0.9, 1.05, 0.98, 1],
+    skewX: dir === "left" ? [20, -10, 5, -2, 0] : [-20, 10, -5, 2, 0],
+    skewY: dir === "left" ? [10, -5, 2, -1, 0] : [-10, 5, -2, 1, 0],
     filter: "blur(0px)",
-    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
-  },
+    transition: { 
+      duration: 0.8, 
+      ease: "easeOut",
+      times: [0, 0.4, 0.6, 0.8, 1]
+    },
+  }),
 };
 
 function ServiceCard({
@@ -138,45 +150,54 @@ function ServiceCard({
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, margin: "-20% 0px -20% 0px" }}
-      whileHover={{ y: -3, scale: 1.01 }}
+      whileHover={{ 
+        y: -5,
+        scaleX: [1, 1.05, 0.95, 1.02, 0.98, 1],
+        scaleY: [1, 0.95, 1.05, 0.98, 1.02, 1],
+        skewX: [0, -4, 4, -2, 2, 0],
+        skewY: [0, 2, -2, 1, -1, 0],
+        rotate: [0, -2, 2, -1, 1, 0],
+        transition: { duration: 0.7, ease: "easeInOut" }
+      }}
       transition={{ type: "spring", stiffness: 240, damping: 22 }}
       className={[
-        "relative overflow-hidden rounded-xl border border-white/10",
-        "bg-[#141427]/70",
-        "shadow-[0_0_0_1px_rgba(255,255,255,0.02),0_22px_70px_-30px_rgba(0,0,0,0.85)]",
-        "backdrop-blur",
+        "relative overflow-visible rounded-xl border-b-4 border-b-white",
+        "bg-[#1d1836]",
+        "shadow-lg",
       ].join(" ")}
     >
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-[2px] opacity-90">
-        <div className={["h-full w-full", item.accent.line].join(" ")} />
-      </div>
-      <div className="relative min-h-[176px] p-6 sm:min-h-[190px] sm:p-7">
-        <div className="flex items-start gap-3">
-          <div
-            className={[
-              "mt-0.5 inline-flex h-10 w-10 items-center justify-center rounded-lg",
-              "border border-white/10 text-white/90",
-              "ring-1",
-              item.accent.ring,
-              item.accent.softBg,
-            ].join(" ")}
-          >
-            {item.icon}
-          </div>
+      {/* Arrow for left aligned card (desktop) */}
+      {align === "left" && (
+        <div className="hidden md:block absolute top-[15px] -right-[16px] w-0 h-0 border-y-[10px] border-y-transparent border-l-[16px] border-l-[#1d1836]" />
+      )}
+      
+      {/* Arrow for right aligned card (desktop) */}
+      {align === "right" && (
+        <div className="hidden md:block absolute top-[15px] -left-[16px] w-0 h-0 border-y-[10px] border-y-transparent border-r-[16px] border-r-[#1d1836]" />
+      )}
 
-          <div className="min-w-0">
-            <p className="text-[11px] sm:text-xs font-medium tracking-wide text-white/60">
-              {item.subtitle}
-            </p>
-            <h3 className="mt-1 text-base sm:text-lg font-semibold leading-snug text-white">
-              {item.title}
-            </h3>
-          </div>
-        </div>
+      {/* Arrow for mobile (always on left since card is on right of timeline) */}
+      <div className="md:hidden absolute top-[15px] -left-[16px] w-0 h-0 border-y-[10px] border-y-transparent border-r-[16px] border-r-[#1d1836]" />
 
-        <p className="mt-3 text-sm sm:text-[15px] leading-relaxed text-white/75">
-          {item.description}
+      <div className="relative p-6 sm:p-7">
+        <h3 className="text-xl sm:text-[22px] font-bold leading-snug text-white">
+          {item.title}
+        </h3>
+        <p className="mt-1.5 text-[15px] font-medium tracking-wide text-white/60">
+          {item.subtitle}
         </p>
+
+        <ul className="mt-5 space-y-3">
+          {item.description.split('. ').map((point, index) => {
+            if (!point.trim()) return null;
+            return (
+              <li key={index} className="flex items-start gap-3 text-white/80 text-sm sm:text-[15px] leading-relaxed">
+                <span className="mt-[7px] h-1.5 w-1.5 rounded-full bg-white/80 flex-shrink-0" />
+                <span>{point}{index < item.description.split('. ').length - 1 ? '.' : ''}</span>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </motion.div>
   );
@@ -206,7 +227,7 @@ const Timeline = () => {
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
           <div className="relative">
-            <div className="pointer-events-none absolute left-3 top-0 h-full w-1 bg-gradient-to-b from-indigo-400/65 via-sky-400/45 to-fuchsia-400/65 md:left-1/2 md:-translate-x-1/2" />
+            <div className="pointer-events-none absolute left-6 top-0 h-full w-[3px] bg-white/10 md:left-1/2 md:-translate-x-1/2" />
 
             <ol className="space-y-8 md:space-y-14">
               {services.map((item, index) => {
@@ -216,14 +237,18 @@ const Timeline = () => {
                 return (
                   <li
                     key={item.title}
-                    className="grid grid-cols-[24px_1fr] items-start gap-x-5 md:grid-cols-[1fr_64px_1fr] md:gap-x-10"
+                    className="grid grid-cols-[48px_1fr] items-start gap-x-5 md:grid-cols-[1fr_64px_1fr] md:gap-x-10"
                   >
                     {/* Left column (desktop) */}
-                    <div className="hidden md:block">
-                      {isLeft ? <ServiceCard item={item} align="left" /> : null}
+                    <div className="hidden md:flex justify-end pr-2 pt-1">
+                      {isLeft ? (
+                        <ServiceCard item={item} align="left" />
+                      ) : (
+                        <span className="text-white font-bold tracking-wider pt-3">{item.period}</span>
+                      )}
                     </div>
 
-                    {/* Node + period */}
+                    {/* Node */}
                     <div className="relative flex flex-col items-center">
                       <motion.div
                         initial={{ opacity: 0, scale: 0.92 }}
@@ -231,49 +256,30 @@ const Timeline = () => {
                         viewport={{ once: true }}
                         transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
                         className={[
-                          "relative z-10 grid h-11 w-11 place-items-center rounded-xl border border-white/20",
-                          "bg-[#0b0b14]/70 shadow-[0_14px_40px_-20px_rgba(0,0,0,0.95)] backdrop-blur",
+                          "relative z-10 flex h-[50px] w-[50px] items-center justify-center rounded-full border-[4px] border-white/20",
+                          "bg-[#1d1836] shadow-xl",
                         ].join(" ")}
                       >
-                        <motion.div
-                          aria-hidden="true"
-                          animate={{
-                            opacity: [0.25, 0.65, 0.25],
-                            scale: [1, 1.18, 1],
-                          }}
-                          transition={{
-                            duration: 2.6,
-                            repeat: Infinity,
-                            ease: "easeInOut",
-                          }}
-                          className="absolute inset-0 rounded-xl bg-white/10"
-                        />
-                        <div
-                          className={[
-                            "relative grid h-8 w-8 place-items-center rounded-lg border border-white/10 text-white/90",
-                            "ring-1",
-                            item.accent.ring,
-                            item.accent.softBg,
-                          ].join(" ")}
-                        >
+                        <div className="text-white flex items-center justify-center h-full w-full">
                           {item.icon}
                         </div>
                       </motion.div>
-
-                      <div className="mt-2 rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 text-[11px] font-medium tracking-wide text-white/60">
-                        {item.period}
-                      </div>
                     </div>
 
                     {/* Right column (mobile + desktop) */}
-                    <div className="md:mt-0">
+                    <div className="md:mt-0 pt-1">
+                      <div className="md:hidden mb-3 text-white font-bold tracking-wider text-sm pt-3">
+                        {item.period}
+                      </div>
                       <div className="md:hidden">
                         <ServiceCard item={item} align="right" />
                       </div>
-                      <div className="hidden md:block">
+                      <div className="hidden md:block pl-2">
                         {!isLeft ? (
                           <ServiceCard item={item} align="right" />
-                        ) : null}
+                        ) : (
+                          <span className="text-white font-bold tracking-wider pt-3 inline-block">{item.period}</span>
+                        )}
                       </div>
                     </div>
                   </li>
