@@ -207,7 +207,7 @@ function ServiceCard({
 
 const Timeline = () => {
   return (
-    <section className="relative w-full py-16">
+    <section className="relative w-full py-16 overflow-x-clip">
       <div className="mx-auto  px-4 md:px-8">
         <div className="mx-auto mb-10 max-w-2xl text-center md:mb-14">
           <motion.h2
