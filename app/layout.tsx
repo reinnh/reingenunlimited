@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -13,41 +13,113 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://reingen.xyz"),
   title: {
     default: "Reingen | Premium Web Engineering & Digital Infrastructure",
     template: "%s | Reingen",
   },
-  description: "We build scalable, high-performance web systems, e-commerce platforms, and digital infrastructure for modern businesses.",
-  keywords: ["Web Engineering", "Next.js", "React", "Digital Infrastructure", "E-commerce Development", "Software Agency", "Reingen"],
-  authors: [{ name: "Reingen Limited" }],
+  description: "We architect the future of the web. Reingen engineers scalable, high-performance web systems, bespoke e-commerce platforms, and resilient digital infrastructure for modern businesses.",
+  applicationName: "Reingen Limited",
+  keywords: [
+    "Web Engineering",
+    "Next.js",
+    "React",
+    "Digital Infrastructure",
+    "E-commerce Development",
+    "Software Agency",
+    "Reingen",
+    "Custom Web Applications",
+    "Enterprise Software",
+    "UI/UX Design",
+    "Full-Stack Development",
+    "High-Performance Web Systems"
+  ],
+  authors: [{ name: "Reingen Limited", url: "https://reingen.xyz" }],
   creator: "Reingen Limited",
+  publisher: "Reingen Limited",
+  generator: "Next.js",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  alternates: {
+    canonical: "/",
+    languages: {
+      "en-US": "/en-US",
+    },
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "https://reingen.xyz",
     siteName: "Reingen",
-    title: "Reingen | Premium Web Engineering",
-    description: "Building scalable, high-performance web systems and digital infrastructure.",
+    title: "Reingen | Premium Web Engineering & Digital Infrastructure",
+    description: "Building scalable, high-performance web systems, robust e-commerce platforms, and digital infrastructure for forward-thinking brands.",
     images: [
       {
         url: "/logo.jpg",
         width: 1200,
         height: 630,
-        alt: "Reingen Logo",
+        alt: "Reingen - Premium Web Engineering",
+        type: "image/jpeg",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
+    site: "@reingen",
+    creator: "@reingen",
     title: "Reingen | Premium Web Engineering",
-    description: "Building scalable, high-performance web systems and digital infrastructure.",
-    images: ["/logo.jpg"],
+    description: "Building scalable, high-performance web systems and robust digital infrastructure.",
+    images: {
+      url: "/logo.jpg",
+      alt: "Reingen Logo",
+    },
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
   icons: {
-    icon: "/logo.jpg",
-    apple: "/logo.jpg",
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icon.png", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-icon.png" },
+    ],
+    other: [
+      {
+        rel: "apple-touch-icon-precomposed",
+        url: "/apple-touch-icon-precomposed.png",
+      },
+    ],
   },
   manifest: "/site.webmanifest",
+  category: "technology",
+  classification: "Web Development Agency",
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#050816" },
+  ],
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  colorScheme: "dark light",
 };
 
 import { Toaster } from 'sonner';
