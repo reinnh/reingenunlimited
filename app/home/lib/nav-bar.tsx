@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
@@ -23,15 +24,6 @@ export default function NavBar() {
         <Link
           href="/"
           className="flex items-center gap-3 text-white text-[22px] font-bold tracking-wide">
-          <div className="relative w-8 h-8 rounded-full overflow-hidden border border-white/20">
-            <Image 
-              src="/logo.jpg" 
-              alt="Reingen Logo" 
-              fill 
-              className="object-cover"
-              sizes="32px"
-            />
-          </div>
           REINGEN
         </Link>
 
@@ -60,22 +52,30 @@ export default function NavBar() {
       </div>
 
       {/* Mobile Menu */}
-      {open && (
-        <div className="sm:hidden bg-[#0b0b12] border-t border-white/10">
-          <ul className="flex flex-col py-4 px-6 gap-4">
-            {navLinks.map((link) => (
-              <li key={link.id}>
-                <Link
-                  href={`#${link.id}`}
-                  onClick={() => setOpen(false)}
-                  className="block text-neutral-300 hover:text-white text-[18px] transition-colors">
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="sm:hidden bg-[#0b0b12] border-t border-white/10 overflow-hidden"
+          >
+            <ul className="flex flex-col py-6 px-6 gap-6">
+              {navLinks.map((link) => (
+                <li key={link.id}>
+                  <Link
+                    href={`#${link.id}`}
+                    onClick={() => setOpen(false)}
+                    className="block text-neutral-300 hover:text-white text-[20px] font-medium transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }

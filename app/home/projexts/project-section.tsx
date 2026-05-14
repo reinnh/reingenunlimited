@@ -6,6 +6,13 @@ import { useState } from "react";
 import { ExternalLink, X, ChevronRight } from "lucide-react";
 import SectionWrapper from "@/app/hoc/section-wrapper";
 import { AnimatePresence } from "framer-motion";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, FreeMode } from "swiper/modules";
+
+// Swiper styles
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/autoplay";
 
 /* ------------------------------------------------------------------ */
 /*  DATA                                                               */
@@ -149,11 +156,6 @@ function ProjectCard({
 
   return (
     <motion.article
-      variants={cardVariants}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ delay: index * 0.08 }}
       className="group relative flex flex-col overflow-hidden rounded-xl border border-white/8 bg-[#0e0e1c]/80 transition-colors duration-300 hover:border-white/15"
     >
       {/* top accent line */}
@@ -396,16 +398,31 @@ function ProjectGallery() {
           </p>
         </div>
 
-        {/* grid */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {projects.map((project, i) => (
-            <ProjectCard
-              key={project.slug}
-              project={project}
-              index={i}
-              onSelect={() => setSelected(project)}
-            />
-          ))}
+        {/* swippable marquee gallery */}
+        <div className="mt-8">
+          <Swiper
+            modules={[Autoplay, FreeMode]}
+            spaceBetween={24}
+            slidesPerView="auto"
+            freeMode={true}
+            loop={true}
+            speed={10000} // Super slow drift
+            autoplay={{
+              delay: 0,
+              disableOnInteraction: false,
+            }}
+            className="w-full pb-10 cursor-grab active:cursor-grabbing"
+          >
+            {projects.map((project, i) => (
+              <SwiperSlide key={project.slug} className="!w-[300px] sm:!w-[350px]">
+                <ProjectCard
+                  project={project}
+                  index={i}
+                  onSelect={() => setSelected(project)}
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
       </div>
 

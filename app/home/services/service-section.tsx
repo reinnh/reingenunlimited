@@ -1,6 +1,6 @@
 "use client";
 
-import { motion ,Variants} from "framer-motion";
+
 import SectionWrapper from "@/app/hoc/section-wrapper";
 import type { ReactNode } from "react";
 import {
@@ -108,33 +108,7 @@ const services: Service[] = [
   },
 ];
 
-const cardVariants: Variants = {
-  hidden: (dir: "left" | "right") => ({
-    opacity: 0,
-    y: 60,
-    x: dir === "left" ? -40 : 40,
-    scaleX: 0.8,
-    scaleY: 1.2,
-    skewX: dir === "left" ? 20 : -20,
-    skewY: dir === "left" ? 10 : -10,
-    filter: "blur(6px)",
-  }),
-  show: (dir: "left" | "right") => ({
-    opacity: 1,
-    y: 0,
-    x: 0,
-    scaleX: [0.8, 1.1, 0.95, 1.02, 1],
-    scaleY: [1.2, 0.9, 1.05, 0.98, 1],
-    skewX: dir === "left" ? [20, -10, 5, -2, 0] : [-20, 10, -5, 2, 0],
-    skewY: dir === "left" ? [10, -5, 2, -1, 0] : [-10, 5, -2, 1, 0],
-    filter: "blur(0px)",
-    transition: { 
-      duration: 0.8, 
-      ease: "easeOut",
-      times: [0, 0.4, 0.6, 0.8, 1]
-    },
-  }),
-};
+
 
 function ServiceCard({
   item,
@@ -144,22 +118,7 @@ function ServiceCard({
   align: "left" | "right";
 }) {
   return (
-    <motion.div
-      custom={align}
-      variants={cardVariants}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, margin: "-20% 0px -20% 0px" }}
-      whileHover={{ 
-        y: -5,
-        scaleX: [1, 1.05, 0.95, 1.02, 0.98, 1],
-        scaleY: [1, 0.95, 1.05, 0.98, 1.02, 1],
-        skewX: [0, -4, 4, -2, 2, 0],
-        skewY: [0, 2, -2, 1, -1, 0],
-        rotate: [0, -2, 2, -1, 1, 0],
-        transition: { duration: 0.7, ease: "easeInOut" }
-      }}
-      transition={{ type: "spring", stiffness: 240, damping: 22 }}
+    <div
       className={[
         "relative overflow-visible rounded-xl border-b-4 border-b-white",
         "bg-[#1d1836]",
@@ -199,7 +158,7 @@ function ServiceCard({
           })}
         </ul>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -210,15 +169,11 @@ const Timeline = () => {
     <section className="relative w-full py-16 overflow-x-clip">
       <div className="mx-auto  px-4 md:px-8">
         <div className="mx-auto mb-10 max-w-2xl text-center md:mb-14">
-          <motion.h2
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          <h2
             className="font-saira text-balance text-3xl font-semibold tracking-tight text-white/95 sm:text-4xl"
           >
             Services We Offer
-          </motion.h2>
+          </h2>
           <p className="mt-3 text-pretty text-sm leading-relaxed text-white/60 sm:text-base">
             Clear, professional delivery across strategy, design, development, and
             long-term support.
@@ -250,11 +205,7 @@ const Timeline = () => {
 
                     {/* Node */}
                     <div className="relative flex flex-col items-center">
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0.92 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                    <div
                         className={[
                           "relative z-10 flex h-[50px] w-[50px] items-center justify-center rounded-full border-[4px] border-white/20",
                           "bg-[#1d1836] shadow-xl",
@@ -263,7 +214,7 @@ const Timeline = () => {
                         <div className="text-white flex items-center justify-center h-full w-full">
                           {item.icon}
                         </div>
-                      </motion.div>
+                      </div>
                     </div>
 
                     {/* Right column (mobile + desktop) */}

@@ -92,8 +92,7 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.ico" },
-      { url: "/icon.png", type: "image/png" },
+      { url: "/logo.jpg" },
     ],
     apple: [
       { url: "/apple-icon.png" },
@@ -123,6 +122,7 @@ export const viewport: Viewport = {
 };
 
 import { Toaster } from 'sonner';
+import SmoothScroll from './hoc/smooth-scroll';
 
 export default function RootLayout({
   children,
@@ -135,8 +135,10 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased no-scrollbar`}
     >
       <body className="min-h-full flex flex-col">
-        {children}
-        <Toaster theme="dark" richColors position="top-right" />
+        <SmoothScroll>
+          {children}
+          <Toaster theme="dark" richColors position="top-right" />
+        </SmoothScroll>
       </body>
     </html>
   );
